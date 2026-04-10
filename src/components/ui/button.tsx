@@ -38,11 +38,11 @@ const buttonVariants = cva(
     }
 )
 
-interface Props extends React.ComponentProps<"button">, VariantProps<typeof buttonVariants> {
+interface ButtonProps extends React.ComponentProps<"button">, VariantProps<typeof buttonVariants> {
     asChild?: boolean
 }
 
-const Button = React.forwardRef<HTMLButtonElement, Props>(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant, size, asChild = false, children, ...props }, ref) => {
         const Comp = asChild ? Slot : "button"
 
@@ -61,4 +61,4 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
 )
 Button.displayName = "Button"
 
-export { Button, buttonVariants }
+export { Button, buttonVariants, type ButtonProps }

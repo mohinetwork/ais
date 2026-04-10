@@ -75,6 +75,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ImageGeneration } from "@/components/ui/ai-chat-image-generation-1";
 import { CardCanvas, Card } from "@/components/ui/animated-glow-card";
+import { CookiePanel } from "@/components/ui/cookie-banner-1";
 
 const VoiceAgentClient = dynamic(() => import("@/components/VoiceAgentClient"), {
   ssr: false,
@@ -925,7 +926,7 @@ export default function AnmixDashboard() {
       a.click();
       a.remove();
       URL.revokeObjectURL(blobUrl);
-    } catch {
+    } catch (_e) {
       // ignore
     }
   };
@@ -980,7 +981,7 @@ export default function AnmixDashboard() {
           ctx.restore();
           URL.revokeObjectURL(wmObjUrl);
           break;
-        } catch { continue; }
+        } catch (_e) { continue; }
       }
 
       const finalBlob: Blob | null = await new Promise((resolve, reject) =>
@@ -1002,7 +1003,7 @@ export default function AnmixDashboard() {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [desktopSidebarCollapsed, setDesktopSidebarCollapsed] = useState(false);
-  const [chatMode, setChatMode] = useState<"chat" | "image-gen" | "image-edit" | "video-gen">("chat");
+  const [chatMode, setChatMode] = useState<"chat" | "image-gen" | "image-edit" | "image-enhance" | "video-gen">("chat");
   // Auth removed - always free access
   const user: any = { id: "guest", fullName: "Guest User", imageUrl: undefined };
   const isSignedIn = true;
@@ -1050,7 +1051,7 @@ export default function AnmixDashboard() {
     try {
       const raw = window.localStorage.getItem("anmix-desktop-sidebar-collapsed");
       if (raw === "1") setDesktopSidebarCollapsed(true);
-    } catch {
+    } catch (_e) {
       // ignore
     }
   }, []);
@@ -1063,7 +1064,7 @@ export default function AnmixDashboard() {
           "anmix-desktop-sidebar-collapsed",
           next ? "1" : "0",
         );
-      } catch {
+      } catch (_e) {
         // ignore
       }
       return next;
@@ -1182,13 +1183,6 @@ export default function AnmixDashboard() {
     if (!isLoaded) return;
 
     const load = async () => {
-      // Supabase only when explicitly enabled (requires user_chats table in Supabase)
-  
-        } catch {
-          // fall back to localStorage
-        }
-      }
-
       // Fallback: localStorage (works for guests too)
       if (typeof window === "undefined") return;
       try {
@@ -1199,7 +1193,7 @@ export default function AnmixDashboard() {
             setChatHistory(parsed);
           }
         }
-      } catch {
+      } catch (_e) {
         // ignore parse errors
       }
     };
@@ -1216,7 +1210,7 @@ export default function AnmixDashboard() {
         const parsed: SavedCard = JSON.parse(stored);
         setSavedCard(parsed);
       }
-    } catch {
+    } catch (_e) {
       // ignore parse errors
     }
   }, []);
@@ -1225,21 +1219,11 @@ export default function AnmixDashboard() {
   useEffect(() => {
     if (!isLoaded) return;
 
-    // Save to Supabase only when enabled (user_chats table must exist)
-,
-            { onConflict: "user_id" }
-          );
-        } catch {
-          // ignore write errors; localStorage will still have a copy
-        }
-      })();
-    }
-
     // Also keep a localStorage copy for fast reloads / guests
     if (typeof window !== "undefined") {
       try {
         window.localStorage.setItem("anmix-chat-history", JSON.stringify(chatHistory));
-      } catch {
+      } catch (_e) {
         // ignore storage errors
       }
     }
@@ -2072,7 +2056,7 @@ export default function AnmixDashboard() {
                       className="flex gap-3 items-center"
                     >
                       <div className="flex items-center gap-2 mt-1 text-xs text-white/60">
-                        <Spinner variant="pinwheel" className="w-4 h-4 text-[#60a5ff]" />
+                        <Spinner className="w-4 h-4 text-[#60a5ff]" />
                         <span className="anmix-shimmer-text">Fyoia AI is thinking…</span>
                       </div>
                     </motion.div>
@@ -2447,7 +2431,7 @@ export default function AnmixDashboard() {
                 if (typeof window !== "undefined") {
                   window.localStorage.setItem("anmix-billing-card", JSON.stringify(card));
                 }
-              } catch {
+              } catch (_e) {
                 // ignore storage errors
               }
 
