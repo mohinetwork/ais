@@ -1,9 +1,9 @@
-import { Plus_Jakarta_Sans, Caveat, Syne, Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, Caveat, Syne } from "next/font/google";
 
-export const heading = Inter({
+export const heading = Plus_Jakarta_Sans({
     subsets: ["latin"],
     variable: "--font-heading",
-    weight: ["300", "400", "500", "700", "800"],
+    weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 export const base = Plus_Jakarta_Sans({

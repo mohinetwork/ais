@@ -75,6 +75,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ImageGeneration } from "@/components/ui/ai-chat-image-generation-1";
 import { CardCanvas, Card } from "@/components/ui/animated-glow-card";
+import { CookiePanel } from "@/components/ui/cookie-banner-1";
 
 const VoiceAgentClient = dynamic(() => import("@/components/VoiceAgentClient"), {
   ssr: false,
@@ -1002,7 +1003,7 @@ export default function AnmixDashboard() {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [desktopSidebarCollapsed, setDesktopSidebarCollapsed] = useState(false);
-  const [chatMode, setChatMode] = useState<"chat" | "image-gen" | "image-edit" | "video-gen">("chat");
+  const [chatMode, setChatMode] = useState<"chat" | "image-gen" | "image-edit" | "image-enhance" | "video-gen">("chat");
   // Auth removed - always free access
   const user: any = { id: "guest", fullName: "Guest User", imageUrl: undefined };
   const isSignedIn = true;
@@ -2055,7 +2056,7 @@ export default function AnmixDashboard() {
                       className="flex gap-3 items-center"
                     >
                       <div className="flex items-center gap-2 mt-1 text-xs text-white/60">
-                        <Spinner variant="pinwheel" className="w-4 h-4 text-[#60a5ff]" />
+                        <Spinner className="w-4 h-4 text-[#60a5ff]" />
                         <span className="anmix-shimmer-text">Fyoia AI is thinking…</span>
                       </div>
                     </motion.div>
